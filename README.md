@@ -2,9 +2,7 @@
 A repository for Python files containing information pertaining to the preparation of quantum states know as *semi-classical subset states*.
 
 For a subset $C \subset \{0,1\}^n$ such that $|C| = {\rm poly}(n)$, we define a *semi-classical subset state* (SCSS) as:
-$$
-|C\rangle = \frac{1}{\sqrt{|C|}} \sum_{x\in C} |x\rangle.
-$$
+$$|C\rangle = \frac{1}{\sqrt{|C|}} \sum_{x\in C} |x\rangle.$$
 
 ## Grover-Rudolph Preparation
 To prepre the state, we first prepare a uniform superposition state over the computational basis states from $|0\rangle$ to $|k-1\rangle$, where $k = |C|$.
