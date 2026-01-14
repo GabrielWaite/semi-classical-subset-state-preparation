@@ -104,7 +104,6 @@ class GroverRudolphAngles:
         for prefix in prefixes:
             N0, N1 = self.get_partition_counter_from_prefix(prefix)
             angle = self.compute_partition_angle(N0, N1)
-            print(f"Prefix: {prefix}, N0: {N0}, N1: {N1}, Angle: {angle}")
             angles.append(angle)
 
         return angles
