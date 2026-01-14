@@ -25,6 +25,7 @@ class GroverRudolphAngles:
             list[str]: A list of binary strings representing the prefixes.
 
         Notes:
+          !! we DO add the trivial '' control sequence !!           
             The required length of the prefixes changes as the circuit goes into different "layers".
             By design, for cardinalities greater than 2, there is a rotation gate applied at the start that has no control. Thus the expected number of prefixes should be the cardinality minus 2.
         Example:
@@ -38,10 +39,9 @@ class GroverRudolphAngles:
         while len(result) < num:
             for i in range(2**length):
                 result.append(bin(i)[2:].zfill(length))
-                if len(result) == num: return result
+                if len(result) == num: return [''] + result
             length += 1
-
-        return result
+        return [''] + result
     
     def get_partition_counter_from_prefix(self, prefix: str) -> tuple[int, int]:
         """
@@ -61,7 +61,7 @@ class GroverRudolphAngles:
         reversed_binary_values: list[str] = [bv[::-1] for bv in binary_values]
 
         # List the og bv and the truncated string
-        conditional_binary_values: list[tuple[str, str]] = [(bv, bv[:prefix_length]) for bv in reversed_binary_values if bv[:prefix_length] == prefix]
+        conditional_binary_values: list[tuple[str, str]] = [(bv, bv[prefix_length:]) for bv in reversed_binary_values if bv[:prefix_length] == prefix]
 
         # List matchings
         list_N0: list[str] = [bv for bv in conditional_binary_values if bv[1][0] == '0']
@@ -104,24 +104,22 @@ class GroverRudolphAngles:
         for prefix in prefixes:
             N0, N1 = self.get_partition_counter_from_prefix(prefix)
             angle = self.compute_partition_angle(N0, N1)
+            print(f"Prefix: {prefix}, N0: {N0}, N1: {N1}, Angle: {angle}")
             angles.append(angle)
 
-        return angle
+        return angles
 
 def main():
     """ Example """
-    c = 5
+    c = 6
     angle_generator = GroverRudolphAngles(c)
     print(angle_generator)
-    binary_control_Sequence = [''] + angle_generator.multi_control_prefixes
+    binary_control_sequence = angle_generator.multi_control_prefixes
 
     print(f"Cardinality: {c}")
-    print(f"Binary Control Sequence: {binary_control_Sequence}")
+    print(f"Binary Control Sequence: {binary_control_sequence}")
     print(f"Expect {c - 1} angles, with {c - 2} being multi-controlled.")
     print("==--==--"*10)
 
     angle_list = angle_generator.angles
     print(f"Angles (radians): {angle_list}")
-
-if __name__ == "__main__":
-    main()
